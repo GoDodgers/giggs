@@ -16,7 +16,7 @@ module.exports = {
 			location_lng: req.body.location_lng,
 			deadline: req.body.deadline,
 		}*/
-		Job.bulkCreate(req.body).then(function(jobs) { // Notice: There are no arguments here, as of right now you'll have to...
+		Job.create(req.body).then(function(jobs) { // Notice: There are no arguments here, as of right now you'll have to...
 				console.log('check database for new job');
 				res.send(jobs);
 			})

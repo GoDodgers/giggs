@@ -10,7 +10,7 @@ const Jobs = connection.define('Jobs', {
 
 	openings: {
 		type: Sequelize.INTEGER,
-		notNull: true,
+		allowNull: false,
 	},
 
 	description: {
@@ -32,6 +32,7 @@ const Jobs = connection.define('Jobs', {
 
 	user_id: {
 		type: Sequelize.INTEGER,
+		allowNull: false,
 		references: {
 			model: Users,
 			key: 'id',
@@ -40,7 +41,7 @@ const Jobs = connection.define('Jobs', {
 
 	max_price: {
 		type: Sequelize.INTEGER,
-		notNull: true,
+		allowNull: false,
 	},
 
 	location_lat: {
