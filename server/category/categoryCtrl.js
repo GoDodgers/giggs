@@ -3,21 +3,11 @@ const Category = require('./categoryModel');
 module.exports.createDummyCategories = function(req, res) {
 	//dummy data for categories
 	const dummyData = [
-		{
-			name: 'tech',
-		},
-		{
-			name: 'auto',
-		},
-		{
-			name: 'plumbing',
-		},
-		{
-			name: 'tutor',
-		},
-		{
-			name: 'cook',
-		}
+		{ name: 'plumbing' },
+		{ name: 'tutor' },
+		{ name: 'tech' },
+		{ name: 'auto' },
+		{ name: 'cook' }
 	];
 
 	Category.bulkCreate(dummyData).then(function(categories) { 
