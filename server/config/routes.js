@@ -8,7 +8,7 @@ router.get('/applicant', applicantController.helloWorld);
 
 router.get('/category', categoryController.helloWorld);
 
-router.get('/db/jobs/create', jobController.createJob);
+router.post('/db/jobs/create', jobController.createJob);
 router.get('/db/jobs/getAll', jobController.getAllJobs);
 
 router.post('/auth/signup', userController.createUser);
