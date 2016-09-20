@@ -1,12 +1,10 @@
-var Sequelize = require('sequelize');
-var connection = require('../db/connection.js');
-var Categories = require('../category/categoryModel.js');
-console.log('requiring users');
-var Users = require('../user/userModel.js');
+const Sequelize = require('sequelize');
+const connection = require('../db/connection');
+const Categories = require('../category/categoryModel');
+const Users = require('../user/userModel');
 
-console.log('creating jobs');
-var Jobs = connection.define('Jobs', {
-	name: {
+const Jobs = connection.define('Jobs', {
+	jobName: {
 		type: Sequelize.STRING,
 	},
 
@@ -18,17 +16,17 @@ var Jobs = connection.define('Jobs', {
 	description: {
 		type: Sequelize.STRING,
 		len: [0, 255],
-		msg: "Description must be between 0 & 250 characters.",
+		msg: 'Description must be between 0 & 250 characters.',
 
 	},
 
 	category_id: {
 		type: Sequelize.INTEGER,
 		references: {
-			 // This is the reference to another model
-			 model: Categories,
-			 // This is the column name of the referenced model
-			 key: 'id',
+			// This is the reference to another model
+			model: Categories,
+			// This is the column name of the referenced model
+			key: 'id',
 		},
 	},
 
