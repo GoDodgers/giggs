@@ -20,4 +20,9 @@ module.exports = {
 			.then(data => res.status(200).send(data))
 			.catch(error => error).save();
 	},
+
+	getAllJobs: (req, res) => {
+		res.send('inside get all jobs');
+	},
+	
 };
