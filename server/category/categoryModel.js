@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const connection = require('../db/connection');
+const Job = require('../job/jobModel');
 
 const Categories = connection.define('Categories', {
 	name: {
@@ -7,6 +8,17 @@ const Categories = connection.define('Categories', {
 		allowNull: false,
 		notEmpty: true,
 	},
+
+	job_id: {
+		type: Sequelize.INTEGER,
+		references: {
+			// This is the reference to another model
+			model: Job,
+			// This is the column name of the referenced model
+			key: 'id',
+		},
+	},
+
 }, {
 	freezeTableName: true,
 });
