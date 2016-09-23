@@ -12,19 +12,19 @@ module.exports = {
 				//this will create the first lvl of categories, because parentID
 				//default to null, parentID will be null
 				Category.create({ name: category, parent_id: parentID })
-					.then((cat) => {
+					.then(cat => {
 						if (categories[category] != null) {
 							insertCategories(categories[category], cat.dataValues.id);
 						}
 						rowsInserted++;
-						if (total == rowsInserted) {
+						if (total === rowsInserted) {
 							res.status(201).send('categories created');
 						}
 						return category;
 					})
 					.catch((error) => {
 						console.log(error);
-						res.status(500).send('Server Error Catagories not Loaded');
+						res.status(500).send(`Server Error Catagories not Loaded ${error}`);
 					});
 			}
 		}
@@ -33,16 +33,16 @@ module.exports = {
 	},
 
 	queryCategory: (req, res) => {
-		Category.findAll({ where : {[req.query.field]:JSON.parse(req.query.key)} })
+		Category.findAll({ where: { [req.query.field]: JSON.parse(req.query.key) } })
 		.then((data) => {
 			res.status(200).send(data);
-		}).catch(error => res.status(500).send('Category Not Found'));
+		}).catch(error => res.status(500).send(`Category Not Found ${error}`));
 	},
 
 	getAllCategories: (req, res) => {
 		Category.findAll().then((cat) => {
 			res.status(200).send(cat);
-		}).catch(error => res.status(500).send('Sever Error'));
+		}).catch(error => res.status(500).send(`Sever Error ${error}`));
 	}
 
 };
