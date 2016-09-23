@@ -1,85 +1,48 @@
 const Category = require('./categoryModel');
+const categoryData = require('./categoryData');
 
-module.exports.propagateCategories = function(req, res) {
+module.exports = {
 
-	const categories = {
-		'home/office': {
-			'moving': {},
-			'cleaning': {},
-			'plumbing': {},
-			'cooking': {},
-			'landscaping': {},
-			'babysitting': {}
-		},
-		'educational tutor': {
-			'arts & crafts': {},
-			'science': {},
-			'cook': {},
-			'legal': {},
-			'auto': {},
-			'music': {},
-			'language': {},
-			'finance': {},
-			'medical': {}
-		},
-		'technology': {
-			'engineering': {},
-			'computers': {},
-			'hardware': {},
-			'software': {},
-			'media': {}
-		},
-		'customer service': {
-			'food': {},
-			'beverage': {},
-			'sales': {}
-		},
-		'automotive': {
-			'repair': {},
-			'delivery': {},
-			'transport': {}
-		},
-		'spa/salon': {
-			'nails': {},
-			'hair': {},
-			'massage': {}
-		},
-		'other': {
-			'general labor': {},
-			'odd jobs': {},
-			'nonprofit': {},
-			'security': {},
-			'maufacturing': {},
-			'retail': {},
-			'marketing': {}
+	propagateCategories: (req, res) => {
+		const total = (function c(t) { return Object.keys(t).length + Object.keys(t).map((k) => t[k]).map((t) => c(t)).reduce((a, b) => a + b, 0)})(categoryData);
+		let rowsInserted = 0;
+
+		function insertCategories(categories, parentID = null) {
+			for (const category of Object.keys(categories)) {
+				//this will create the first lvl of categories, because parentID
+				//default to null, parentID will be null
+				Category.create({ name: category, parent_id: parentID })
+					.then((cat) => {
+						if (categories[category] != null) {
+							insertCategories(categories[category], cat.dataValues.id);
+						}
+						rowsInserted++;
+						if (total == rowsInserted) {
+							res.status(201).send('categories created');
+						}
+						return category;
+					})
+					.catch((error) => {
+						console.log(error);
+						res.status(500).send('Server Error Catagories not Loaded');
+					});
+			}
 		}
-	};
 
-	function insertCategories(category, parentID = null) {
-		for (var key of Object.keys(categories)) {
-			//this will create the first lvl of catagories, because parentID
-			//default to null, parentID will be null
-			Category.build({ name: key, parent_id: parentID })
-				.then(function(cat) {
-					if (categories[key] != null) {
-						insertCategories(categories[key], cat.dataValues.id);
-					}
-				}).save();
-		}
+		insertCategories(categoryData);
+	},
+
+	queryCategory: (req, res) => {
+		Category.findAll({ where : {[req.query.field]:JSON.parse(req.query.key)} })
+		.then((data) => {
+			res.status(200).send(data);
+		}).catch(error => res.status(500).send('Category Not Found'));
+	},
+
+	getAllCategories: (req, res) => {
+		Category.findAll().then((cat) => {
+			res.status(200).send(cat);
+		}).catch(error => res.status(500).send('Sever Error'));
 	}
-
-	//instatiate Table with parent categories and their own id PKs
-	/*Category.bulkCreate(ParentCategories).then(function(categories) { 
-				console.log('check database for categories');
-				res.send(categories);
-			})
-			.catch(function(error) {
-				console.log(error);
-				res.send(error);
-			});
-
-	function mapParentToChildren(parentID, children) {
-
-	}*/
 
 };

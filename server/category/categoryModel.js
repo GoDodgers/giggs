@@ -11,7 +11,7 @@ const Categories = connection.define('Categories', {
 	parent_id: {
 		type: Sequelize.INTEGER,
 		references: {
-			model: Categories,
+			model: 'Categories',
 			key: 'id',
 		},
 	},
@@ -19,6 +19,8 @@ const Categories = connection.define('Categories', {
 }, {
 	freezeTableName: true,
 });
+
+//Categories.hadOne(Categories, { as: 'parent_id', foreignKey : 'id' });
 
 /*Categories.sync({ force: true }).then(function() {
 	console.log('Categories table created');
